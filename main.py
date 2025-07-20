@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request, Form
-from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.responses import HTMLResponse, FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from utils.resume_generator import generate_resume_file
@@ -10,6 +10,17 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
+# Redirect root path to form
+@app.get("/", include_in_schema=False)
+def redirect_to_form():
+    return RedirectResponse("/form")
+
+# Serve the form
+@app.get("/form", response_class=HTMLResponse)
+def serve_form(request: Request):
+    return templates.TemplateResponse("form.html", {"request": request})
+
+# For backward compatibility, also serve the form at root
 @app.get("/", response_class=HTMLResponse)
 async def read_form(request: Request):
     return templates.TemplateResponse("form.html", {"request": request})
