@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume Kraft - Resume Generator</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Resume Kraft</h1>
+    <p>A modern web application that generates professional resumes</p>
+    
+    <form action="/submit" method="post">
+        <div class="form-group">
+            <label for="full_name">Full Name:</label>
+            <input type="text" id="full_name" name="full_name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        
+        <!-- Add other form fields as needed -->
+        
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
