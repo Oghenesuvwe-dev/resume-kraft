@@ -1,39 +1,87 @@
 from fastapi import FastAPI, Request, Form
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from utils.resume_generator import generate_resume_file
 import os
 
-# Initialize FastAPI app
 app = FastAPI()
 
-# Mount static files (e.g., CSS, JS, images)
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
-# Set the directory for templates (e.g., HTML forms)
 templates = Jinja2Templates(directory="templates")
 
-# Root route for displaying form
 @app.get("/", response_class=HTMLResponse)
 async def read_form(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("form.html", {"request": request})
 
-# (Example) Handle form submission - update this to match your actual form
-@app.post("/submit", response_class=HTMLResponse)
-async def handle_form(
+@app.post("/generate")
+async def generate(
     request: Request,
     full_name: str = Form(...),
     email: str = Form(...),
-    # Add other form fields as needed...
+    phone: str = Form(...),
+    location: str = Form(...),
+    summary: str = Form(...),
+    field_of_work: str = Form(...),
+    experience_level: str = Form(...),
+    years_of_experience: str = Form(...),
+    skills: str = Form(...),
+    experience: str = Form(...),
+    education: str = Form(...),
+    projects: str = Form(None),
+    certifications: str = Form(None),
+    languages: str = Form(None),
+    output_format: str = Form(...),
+    other_field_value: str = Form(None)
 ):
-    return templates.TemplateResponse("success.html", {
-        "request": request,
-        "name": full_name,
-        "email": email
-    })
+    try:
+        # If field_of_work is "other", use the other_field_value
+        if field_of_work == "other" and other_field_value:
+            field_of_work = other_field_value
+            
+        data = {
+            "full_name": full_name,
+            "email": email,
+            "phone": phone,
+            "location": location,
+            "summary": summary,
+            "field_of_work": field_of_work,
+            "experience_level": experience_level,
+            "years_of_experience": years_of_experience,
+            "skills": skills,
+            "experience": experience,
+            "education": education,
+            "projects": projects,
+            "certifications": certifications,
+            "languages": languages,
+            "output_format": output_format
+        }
+        
+        resume_path = generate_resume_file(data)
+        filename = f"resume_{full_name.replace(' ', '_')}.{output_format}"
+        
+        # Create a download URL
+        download_url = f"/download/{os.path.basename(resume_path)}"
+        
+        # Return the success template with download information
+        return templates.TemplateResponse(
+            "success.html", 
+            {
+                "request": request,
+                "full_name": full_name,
+                "field_of_work": field_of_work,
+                "output_format": output_format,
+                "download_url": download_url
+            }
+        )
+    except Exception as e:
+        return HTMLResponse(f"Internal Error: {str(e)}", status_code=500)
 
-# Start the app with a dynamic port for Render compatibility
-if __name__ == "__main__":
-    import uvicorn
-    port = int(os.environ.get("PORT", 8000))  # Render sets this dynamically
-    uvicorn.run("main:app", host="0.0.0.0", port=port)
+@app.get("/download/{filename}")
+async def download_file(filename: str):
+    file_path = f"resumes/{filename}"
+    return FileResponse(
+        path=file_path,
+        filename=filename,
+        media_type='application/octet-stream'
+    )
