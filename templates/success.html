@@ -76,6 +76,9 @@
         <div class="resume-details">
             <p>Thank you, <span class="highlight">{{ full_name }}</span>!</p>
             <p>Your {{ output_format|upper }} resume has been created for the <span class="highlight">{{ field_of_work }}</span> position.</p>
+            {% if uploaded_resume %}
+            <p><small>Your uploaded resume was also processed and used as reference.</small></p>
+            {% endif %}
         </div>
         
         <p>Your resume should download automatically. If it doesn't, click the button below:</p>

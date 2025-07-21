@@ -1,41 +1,556 @@
+/* Google Fonts are imported in the HTML file */
+
+:root {
+    --primary-color: #3498db;
+    --primary-dark: #2980b9;
+    --secondary-color: #2c3e50;
+    --light-gray: #f5f5f5;
+    --border-color: #ddd;
+    --success-color: #27ae60;
+    --error-color: #e74c3c;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    max-width: 800px;
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f0f2f5;
+    padding: 40px 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
     margin: 0 auto;
-    padding: 20px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 40px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+}
+
+header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background-color: var(--primary-color);
 }
 
 h1 {
-    color: #2c3e50;
-    text-align: center;
+    color: var(--secondary-color);
+    font-size: 2.8rem;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+    font-family: 'Poppins', sans-serif;
+}
+
+h1 .highlight {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.tagline {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.form-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.form-section h2 {
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--primary-color);
+    display: inline-block;
+    font-family: 'Poppins', sans-serif;
+}
+
+.form-section h2 i {
+    margin-right: 8px;
+    color: var(--primary-color);
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
+    min-width: 200px;
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--secondary-color);
 }
 
 input[type="text"],
-input[type="email"] {
+input[type="email"],
+input[type="number"],
+select,
+textarea {
     width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s;
+    background-color: #fafafa;
+}
+
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="number"]:hover,
+select:hover,
+textarea:hover {
+    background-color: #fff;
+    border-color: #bbb;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.help-text {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.output-format {
+    display: flex;
+    gap: 30px;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+.radio-label input[type="radio"] {
+    opacity: 0;
+    position: absolute;
+}
+
+.radio-custom {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    margin-right: 10px;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.radio-label input[type="radio"]:checked + .radio-custom {
+    border-color: var(--primary-color);
+}
+
+.radio-label input[type="radio"]:checked + .radio-custom::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+}
+
+.disabled-option {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.disabled-option small {
+    font-size: 0.8em;
+    color: #999;
+    font-style: italic;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
 }
 
 button {
-    background-color: #3498db;
-    color: white;
-    padding: 10px 15px;
+    padding: 12px 24px;
     border: none;
     border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
     cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
 }
 
 button:hover {
-    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+.submit-btn {
+    background-color: var(--primary-color);
+    color: white;
+    flex: 2;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
+}
+
+.submit-btn:hover {
+    background-color: var(--primary-dark);
+    box-shadow: 0 6px 8px rgba(52, 152, 219, 0.3);
+}
+
+.reset-btn {
+    background-color: #f1f1f1;
+    color: #333;
+    flex: 1;
+}
+
+.reset-btn:hover {
+    background-color: #e1e1e1;
+}
+
+.add-field-btn {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    padding: 8px 16px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.add-field-btn:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.additional-field {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.additional-field textarea {
+    flex: 1;
+}
+
+.remove-field-btn {
+    background-color: var(--error-color);
+    color: white;
+    padding: 8px;
+    font-size: 0.8rem;
+}
+
+.remove-field-btn:hover {
+    background-color: #c0392b;
+}
+
+/* File upload and cloud storage styles */
+input[type="file"] {
+    padding: 10px;
+    background-color: #fafafa;
+    border: 1px dashed var(--border-color);
+    border-radius: 6px;
+    width: 100%;
+    cursor: pointer;
+}
+
+input[type="file"]:hover {
+    border-color: var(--primary-color);
+    background-color: rgba(52, 152, 219, 0.05);
+}
+
+.import-section {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border: 1px solid #e9ecef;
+}
+
+.cloud-storage-options {
+    margin-top: 15px;
+}
+
+.cloud-storage-options p {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.cloud-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.cloud-btn {
+    background-color: #f8f9fa;
+    border: 1px solid var(--border-color);
+    color: #333;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.cloud-btn:hover {
+    background-color: #f1f1f1;
+    border-color: #bbb;
+}
+
+.cloud-btn.disabled-option {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.cloud-btn.disabled-option:hover {
+    background-color: #f8f9fa;
+    border-color: var(--border-color);
+}
+
+.cloud-storage-options p small {
+    font-size: 0.8em;
+    color: #999;
+    font-style: italic;
+}
+
+/* Skills, certifications, and languages styles */
+.skill-checkboxes,
+.cert-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.skill-checkbox,
+.cert-checkbox {
+    display: inline-flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin: 0;
+    font-weight: normal;
+}
+
+.skill-checkbox:hover,
+.cert-checkbox:hover {
+    background-color: #f1f1f1;
+    border-color: #bbb;
+}
+
+.skill-checkbox input[type="checkbox"],
+.cert-checkbox input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.manual-skills,
+.manual-certifications,
+.manual-languages {
+    margin-top: 15px;
+}
+
+.manual-skills textarea,
+.manual-certifications textarea,
+.manual-languages textarea {
+    min-height: 60px;
+}
+
+.language-radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+    margin-bottom: 15px;
+}
+
+.cloud-btn i {
+    font-size: 1.1rem;
+}
+
+/* Field work radio buttons */
+.field-work-radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+/* Professional fields layout */
+.professional-fields {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.field-work-group {
+    grid-column: 1;
+}
+
+.skills-group {
+    margin-top: 20px;
+    grid-column: 1 / -1; /* Span all columns */
+}
+
+.years-group input {
+    margin-top: 24px; /* Add space to align with other fields that have labels */
+}
+
+/* Experience level radio buttons */
+.experience-radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.radio-option {
+    display: inline-flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin: 0;
+    font-weight: normal;
+}
+
+.radio-option:hover {
+    background-color: #f1f1f1;
+    border-color: #bbb;
+}
+
+.radio-option input[type="radio"] {
+    margin-right: 5px;
+}
+
+.radio-option input[type="radio"]:checked + span {
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+    .professional-fields {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}
+
+#onedrive-btn i {
+    color: #0078d4;
+}
+
+#gdrive-btn i {
+    color: #4285f4;
+}
+
+#proton-btn i {
+    color: #6d4aff;
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    color: #666;
+    font-size: 0.9rem;
+    width: 100%;
+    max-width: 900px;
+}
+
+footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    body {
+        padding: 20px;
+    }
+    
+    .container {
+        padding: 25px;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .submit-btn, .reset-btn {
+        width: 100%;
+    }
 }

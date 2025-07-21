@@ -1,14 +1,2035 @@
-Replace the minimal form (name, email) with your complete, styled resume form, including:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Kraft - Create Your Professional Resume</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h2>Resume <span class="highlight">Kraft</span></h2>
+            <p class="tagline">Create your professional resume in minutes <i class="fas fa-file-alt"></i></p>
+        </header>
 
-Personal Info
-Professional Summary
-Field of Work (dropdown/radio options)
-Experience Level
-Years of Experience
-Skills
-Work Experience
-Education
-Projects (optional)
-Certifications (optional)
-Languages (optional)
-Output Format: DOCX / PDF
+        <form action="/generate" method="post" class="resume-form" enctype="multipart/form-data">
+            <div class="form-section import-section">
+                <h2><i class="fas fa-cloud-upload-alt"></i> Import Existing Resume (Optional)</h2>
+                <div class="form-group">
+                    <label for="existing_resume">Upload Resume</label>
+                    <input type="file" id="existing_resume" name="existing_resume" accept=".pdf,.doc,.docx">
+                    <p class="help-text">Supported formats: PDF, DOC, DOCX (Max 5MB)</p>
+                </div>
+                <div class="cloud-storage-options">
+                    <p>Or import from cloud storage: <small>(temporarily unavailable)</small></p>
+                    <div class="cloud-buttons">
+                        <button type="button" class="cloud-btn disabled-option" id="onedrive-btn" disabled><i class="fab fa-microsoft"></i> OneDrive</button>
+                        <button type="button" class="cloud-btn disabled-option" id="gdrive-btn" disabled><i class="fab fa-google-drive"></i> Google Drive</button>
+                        <button type="button" class="cloud-btn disabled-option" id="proton-btn" disabled><i class="fas fa-shield-alt"></i> Proton Drive</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-section">
+                <h2><i class="fas fa-user"></i> Personal Information</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="full_name">Full Name (Required)</label>
+                        <input type="text" id="full_name" name="full_name" placeholder="John Doe" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email (Required)</label>
+                        <input type="email" id="email" name="email" placeholder="john.doe@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone (Required)</label>
+                        <input type="text" id="phone" name="phone" placeholder="+1 (555) 123-4567" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location & Languages (Required)</label>
+                    <div class="location-language-container">
+                        <div class="location-select">
+                            <select id="location" name="location" required onchange="toggleOtherLocationInput()">
+                                <option value="" disabled selected>Select your country</option>
+                                <option value="Afghanistan">Afghanistan</option>
+                                <option value="Albania">Albania</option>
+                                <option value="Algeria">Algeria</option>
+                                <option value="Andorra">Andorra</option>
+                                <option value="Angola">Angola</option>
+                                <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                                <option value="Argentina">Argentina</option>
+                                <option value="Armenia">Armenia</option>
+                                <option value="Australia">Australia</option>
+                                <option value="Austria">Austria</option>
+                                <option value="Azerbaijan">Azerbaijan</option>
+                                <option value="Bahamas">Bahamas</option>
+                                <option value="Bahrain">Bahrain</option>
+                                <option value="Bangladesh">Bangladesh</option>
+                                <option value="Barbados">Barbados</option>
+                                <option value="Belarus">Belarus</option>
+                                <option value="Belgium">Belgium</option>
+                                <option value="Belize">Belize</option>
+                                <option value="Benin">Benin</option>
+                                <option value="Bhutan">Bhutan</option>
+                                <option value="Bolivia">Bolivia</option>
+                                <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                                <option value="Botswana">Botswana</option>
+                                <option value="Brazil">Brazil</option>
+                                <option value="Brunei">Brunei</option>
+                                <option value="Bulgaria">Bulgaria</option>
+                                <option value="Burkina Faso">Burkina Faso</option>
+                                <option value="Burundi">Burundi</option>
+                                <option value="Cabo Verde">Cabo Verde</option>
+                                <option value="Cambodia">Cambodia</option>
+                                <option value="Cameroon">Cameroon</option>
+                                <option value="Canada">Canada</option>
+                                <option value="Central African Republic">Central African Republic</option>
+                                <option value="Chad">Chad</option>
+                                <option value="Chile">Chile</option>
+                                <option value="China">China</option>
+                                <option value="Colombia">Colombia</option>
+                                <option value="Comoros">Comoros</option>
+                                <option value="Congo">Congo</option>
+                                <option value="Costa Rica">Costa Rica</option>
+                                <option value="Croatia">Croatia</option>
+                                <option value="Cuba">Cuba</option>
+                                <option value="Cyprus">Cyprus</option>
+                                <option value="Czech Republic">Czech Republic</option>
+                                <option value="Denmark">Denmark</option>
+                                <option value="Djibouti">Djibouti</option>
+                                <option value="Dominica">Dominica</option>
+                                <option value="Dominican Republic">Dominican Republic</option>
+                                <option value="Ecuador">Ecuador</option>
+                                <option value="Egypt">Egypt</option>
+                                <option value="El Salvador">El Salvador</option>
+                                <option value="Equatorial Guinea">Equatorial Guinea</option>
+                                <option value="Eritrea">Eritrea</option>
+                                <option value="Estonia">Estonia</option>
+                                <option value="Eswatini">Eswatini</option>
+                                <option value="Ethiopia">Ethiopia</option>
+                                <option value="Fiji">Fiji</option>
+                                <option value="Finland">Finland</option>
+                                <option value="France">France</option>
+                                <option value="Gabon">Gabon</option>
+                                <option value="Gambia">Gambia</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Germany">Germany</option>
+                                <option value="Ghana">Ghana</option>
+                                <option value="Greece">Greece</option>
+                                <option value="Grenada">Grenada</option>
+                                <option value="Guatemala">Guatemala</option>
+                                <option value="Guinea">Guinea</option>
+                                <option value="Guinea-Bissau">Guinea-Bissau</option>
+                                <option value="Guyana">Guyana</option>
+                                <option value="Haiti">Haiti</option>
+                                <option value="Honduras">Honduras</option>
+                                <option value="Hungary">Hungary</option>
+                                <option value="Iceland">Iceland</option>
+                                <option value="India">India</option>
+                                <option value="Indonesia">Indonesia</option>
+                                <option value="Iran">Iran</option>
+                                <option value="Iraq">Iraq</option>
+                                <option value="Ireland">Ireland</option>
+                                <option value="Israel">Israel</option>
+                                <option value="Italy">Italy</option>
+                                <option value="Jamaica">Jamaica</option>
+                                <option value="Japan">Japan</option>
+                                <option value="Jordan">Jordan</option>
+                                <option value="Kazakhstan">Kazakhstan</option>
+                                <option value="Kenya">Kenya</option>
+                                <option value="Kiribati">Kiribati</option>
+                                <option value="Korea, North">Korea, North</option>
+                                <option value="Korea, South">Korea, South</option>
+                                <option value="Kosovo">Kosovo</option>
+                                <option value="Kuwait">Kuwait</option>
+                                <option value="Kyrgyzstan">Kyrgyzstan</option>
+                                <option value="Laos">Laos</option>
+                                <option value="Latvia">Latvia</option>
+                                <option value="Lebanon">Lebanon</option>
+                                <option value="Lesotho">Lesotho</option>
+                                <option value="Liberia">Liberia</option>
+                                <option value="Libya">Libya</option>
+                                <option value="Liechtenstein">Liechtenstein</option>
+                                <option value="Lithuania">Lithuania</option>
+                                <option value="Luxembourg">Luxembourg</option>
+                                <option value="Madagascar">Madagascar</option>
+                                <option value="Malawi">Malawi</option>
+                                <option value="Malaysia">Malaysia</option>
+                                <option value="Maldives">Maldives</option>
+                                <option value="Mali">Mali</option>
+                                <option value="Malta">Malta</option>
+                                <option value="Marshall Islands">Marshall Islands</option>
+                                <option value="Mauritania">Mauritania</option>
+                                <option value="Mauritius">Mauritius</option>
+                                <option value="Mexico">Mexico</option>
+                                <option value="Micronesia">Micronesia</option>
+                                <option value="Moldova">Moldova</option>
+                                <option value="Monaco">Monaco</option>
+                                <option value="Mongolia">Mongolia</option>
+                                <option value="Montenegro">Montenegro</option>
+                                <option value="Morocco">Morocco</option>
+                                <option value="Mozambique">Mozambique</option>
+                                <option value="Myanmar">Myanmar</option>
+                                <option value="Namibia">Namibia</option>
+                                <option value="Nauru">Nauru</option>
+                                <option value="Nepal">Nepal</option>
+                                <option value="Netherlands">Netherlands</option>
+                                <option value="New Zealand">New Zealand</option>
+                                <option value="Nicaragua">Nicaragua</option>
+                                <option value="Niger">Niger</option>
+                                <option value="Nigeria">Nigeria</option>
+                                <option value="North Macedonia">North Macedonia</option>
+                                <option value="Norway">Norway</option>
+                                <option value="Oman">Oman</option>
+                                <option value="Pakistan">Pakistan</option>
+                                <option value="Palau">Palau</option>
+                                <option value="Palestine">Palestine</option>
+                                <option value="Panama">Panama</option>
+                                <option value="Papua New Guinea">Papua New Guinea</option>
+                                <option value="Paraguay">Paraguay</option>
+                                <option value="Peru">Peru</option>
+                                <option value="Philippines">Philippines</option>
+                                <option value="Poland">Poland</option>
+                                <option value="Portugal">Portugal</option>
+                                <option value="Qatar">Qatar</option>
+                                <option value="Romania">Romania</option>
+                                <option value="Russia">Russia</option>
+                                <option value="Rwanda">Rwanda</option>
+                                <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                                <option value="Saint Lucia">Saint Lucia</option>
+                                <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+                                <option value="Samoa">Samoa</option>
+                                <option value="San Marino">San Marino</option>
+                                <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+                                <option value="Saudi Arabia">Saudi Arabia</option>
+                                <option value="Senegal">Senegal</option>
+                                <option value="Serbia">Serbia</option>
+                                <option value="Seychelles">Seychelles</option>
+                                <option value="Sierra Leone">Sierra Leone</option>
+                                <option value="Singapore">Singapore</option>
+                                <option value="Slovakia">Slovakia</option>
+                                <option value="Slovenia">Slovenia</option>
+                                <option value="Solomon Islands">Solomon Islands</option>
+                                <option value="Somalia">Somalia</option>
+                                <option value="South Africa">South Africa</option>
+                                <option value="South Sudan">South Sudan</option>
+                                <option value="Spain">Spain</option>
+                                <option value="Sri Lanka">Sri Lanka</option>
+                                <option value="Sudan">Sudan</option>
+                                <option value="Suriname">Suriname</option>
+                                <option value="Sweden">Sweden</option>
+                                <option value="Switzerland">Switzerland</option>
+                                <option value="Syria">Syria</option>
+                                <option value="Taiwan">Taiwan</option>
+                                <option value="Tajikistan">Tajikistan</option>
+                                <option value="Tanzania">Tanzania</option>
+                                <option value="Thailand">Thailand</option>
+                                <option value="Timor-Leste">Timor-Leste</option>
+                                <option value="Togo">Togo</option>
+                                <option value="Tonga">Tonga</option>
+                                <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+                                <option value="Tunisia">Tunisia</option>
+                                <option value="Turkey">Turkey</option>
+                                <option value="Turkmenistan">Turkmenistan</option>
+                                <option value="Tuvalu">Tuvalu</option>
+                                <option value="Uganda">Uganda</option>
+                                <option value="Ukraine">Ukraine</option>
+                                <option value="United Arab Emirates">United Arab Emirates</option>
+                                <option value="United Kingdom">United Kingdom</option>
+                                <option value="United States">United States</option>
+                                <option value="Uruguay">Uruguay</option>
+                                <option value="Uzbekistan">Uzbekistan</option>
+                                <option value="Vanuatu">Vanuatu</option>
+                                <option value="Vatican City">Vatican City</option>
+                                <option value="Venezuela">Venezuela</option>
+                                <option value="Vietnam">Vietnam</option>
+                                <option value="Yemen">Yemen</option>
+                                <option value="Zambia">Zambia</option>
+                                <option value="Zimbabwe">Zimbabwe</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <input type="text" id="other_location_value" name="other_location_value" placeholder="Enter your location" style="display: none;">
+                        </div>
+                        <div class="language-section">
+                            <p class="help-text">Languages are auto-selected based on your country</p>
+                            <div class="language-radio-group">
+                                <label class="radio-option">
+                                    <input type="checkbox" name="languages[]" value="English">
+                                    <span>English</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="checkbox" name="languages[]" value="Spanish">
+                                    <span>Spanish</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="checkbox" name="languages[]" value="French">
+                                    <span>French</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="checkbox" name="languages[]" value="German">
+                                    <span>German</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="checkbox" name="languages[]" value="Mandarin">
+                                    <span>Mandarin</span>
+                                </label>
+                            </div>
+                            <div class="manual-languages">
+                                <input type="text" id="additional_languages" name="additional_languages" placeholder="Additional languages (comma separated)">
+                            </div>
+                            <input type="hidden" id="languages" name="languages">
+                        </div>
+                    </div>
+                </div>
+                <h3><i class="fas fa-link"></i> Social Media & Professional Profiles</h3>
+                <div class="form-group">
+                    <!-- <label for="social_media_select">Social Media & Professional Profiles (Optional)</label> -->
+                    <select id="social_media_select" onchange="handleSocialMediaSelection()">
+                        <option value="">Select a platform</option>
+                        <option value="linkedin">LinkedIn</option>
+                        <option value="github">GitHub</option>
+                        <option value="twitter">Twitter/X</option>
+                        <option value="medium">Medium</option>
+                        <option value="stackoverflow">Stack Overflow</option>
+                        <option value="youtube">YouTube Channel</option>
+                        <option value="dribbble">Dribbble</option>
+                        <option value="behance">Behance</option>
+                        <option value="kaggle">Kaggle</option>
+                    </select>
+                </div>
+                <div id="social_media_inputs">
+                    <div id="linkedin_input" class="form-group social-media-input" style="display: none;">
+                        <label for="linkedin">LinkedIn URL</label>
+                        <input type="url" id="linkedin" name="linkedin" placeholder="https://www.linkedin.com/in/yourprofile">
+                        <button type="button" class="remove-social-btn" onclick="removeSocialMedia('linkedin_input')">Remove</button>
+                    </div>
+                    <div id="github_input" class="form-group social-media-input" style="display: none;">
+                        <label for="github">GitHub URL</label>
+                        <input type="url" id="github" name="github" placeholder="https://github.com/yourusername">
+                        <button type="button" class="remove-social-btn" onclick="removeSocialMedia('github_input')">Remove</button>
+                    </div>
+                    <div id="twitter_input" class="form-group social-media-input" style="display: none;">
+                        <label for="twitter">Twitter/X URL</label>
+                        <input type="url" id="twitter" name="twitter" placeholder="https://twitter.com/yourusername">
+                        <button type="button" class="remove-social-btn" onclick="removeSocialMedia('twitter_input')">Remove</button>
+                    </div>
+                    <div id="medium_input" class="form-group social-media-input" style="display: none;">
+                        <label for="medium">Medium URL</label>
+                        <input type="url" id="medium" name="medium" placeholder="https://medium.com/@yourusername">
+                        <button type="button" class="remove-social-btn" onclick="removeSocialMedia('medium_input')">Remove</button>
+                    </div>
+                    <div id="stackoverflow_input" class="form-group social-media-input" style="display: none;">
+                        <label for="stackoverflow">Stack Overflow URL</label>
+                        <input type="url" id="stackoverflow" name="stackoverflow" placeholder="https://stackoverflow.com/users/youruserid">
+                        <button type="button" class="remove-social-btn" onclick="removeSocialMedia('stackoverflow_input')">Remove</button>
+                    </div>
+                    <div id="youtube_input" class="form-group social-media-input" style="display: none;">
+                        <label for="youtube">YouTube Channel URL</label>
+                        <input type="url" id="youtube" name="youtube" placeholder="https://www.youtube.com/c/yourchannel">
+                        <button type="button" class="remove-social-btn" onclick="removeSocialMedia('youtube_input')">Remove</button>
+                    </div>
+                    <div id="dribbble_input" class="form-group social-media-input" style="display: none;">
+                        <label for="dribbble">Dribbble URL</label>
+                        <input type="url" id="dribbble" name="dribbble" placeholder="https://dribbble.com/yourusername">
+                        <button type="button" class="remove-social-btn" onclick="removeSocialMedia('dribbble_input')">Remove</button>
+                    </div>
+                    <div id="behance_input" class="form-group social-media-input" style="display: none;">
+                        <label for="behance">Behance URL</label>
+                        <input type="url" id="behance" name="behance" placeholder="https://www.behance.net/yourusername">
+                        <button type="button" class="remove-social-btn" onclick="removeSocialMedia('behance_input')">Remove</button>
+                    </div>
+                    <div id="kaggle_input" class="form-group social-media-input" style="display: none;">
+                        <label for="kaggle">Kaggle URL</label>
+                        <input type="url" id="kaggle" name="kaggle" placeholder="https://www.kaggle.com/yourusername">
+                        <button type="button" class="remove-social-btn" onclick="removeSocialMedia('kaggle_input')">Remove</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2><i class="fas fa-briefcase"></i> Professional Details</h2>
+                <div class="form-group">
+                    <label for="summary">Professional Summary (Required)</label>
+                    <textarea id="summary" name="summary" placeholder="A brief summary of your professional background, skills, and career goals..." required></textarea>
+                </div>
+                
+                <div class="professional-fields">
+                    <div class="form-group field-work-group">
+                        <label for="field_of_work">Field of Work (Required)</label>
+                        <select id="field_of_work" name="field_of_work" required onchange="handleFieldOfWorkChange(this.value)">
+                            <option value="" disabled selected>Select your field of work</option>
+                            <option value="Frontend Developer">Frontend Developer</option>
+                            <option value="Backend Developer">Backend Developer</option>
+                            <option value="Full-Stack Developer">Full-Stack Developer</option>
+                            <option value="DevOps Engineer">DevOps Engineer</option>
+                            <option value="Cloud Engineer">Cloud Engineer</option>
+                            <option value="Cloud Architect">Cloud Architect</option>
+                            <option value="Cloud Security Engineer">Cloud Security Engineer</option>
+                            <option value="Data Scientist">Data Scientist</option>
+                            <option value="Machine Learning Engineer">Machine Learning Engineer</option>
+                            <option value="UI/UX Designer">UI/UX Designer</option>
+                            <option value="Product Manager">Product Manager</option>
+                            <option value="QA Engineer">QA Engineer</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <input type="text" id="other_field_value" name="other_field_value" placeholder="Enter your field of work" style="display: none;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="experience_level">Experience Level (Required)</label>
+                        <select id="experience_level" name="experience_level" required onchange="updateYearsOfExperience(this.value)">
+                            <option value="" disabled selected>Select your experience level</option>
+                            <option value="Intern">Intern</option>
+                            <option value="Entry Level">Entry Level</option>
+                            <option value="Junior">Junior</option>
+                            <option value="Mid-Level">Mid-Level</option>
+                            <option value="Senior">Senior</option>
+                            <option value="Lead">Lead</option>
+                            <option value="Manager">Manager</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group years-group">
+                        <input type="number" id="years_of_experience" name="years_of_experience" min="0" max="50" placeholder="Years of Experience" required>
+                    </div>
+                </div>
+                
+                <div class="form-group skills-group">
+                    <label>Skills (Required)</label>
+                    <div id="skills-container">
+                        <!-- Skills will be dynamically loaded based on field of work -->
+                        <div class="skill-options" id="skill-options">
+                            <p>Please select a Field of Work to see relevant skills</p>
+                        </div>
+                    </div>
+                    <div class="manual-skills">
+                        <label for="additional_skills">Additional Skills</label>
+                        <textarea id="additional_skills" name="additional_skills" placeholder="Add any additional skills not listed above, separated by commas"></textarea>
+                    </div>
+                    <input type="hidden" id="skills" name="skills" required>
+                </div>
+            </div>
+
+
+
+            <div class="form-section">
+                <h2><i class="fas fa-history"></i> Work Experience</h2>
+                <div class="form-group">
+                    <label for="experience">Work Experience (Required)</label>
+                    <p class="help-text">Format: Company, Position, Description | Company, Position, Description</p>
+                    <textarea id="experience" name="experience" placeholder="Google, Software Engineer, Developed and maintained cloud-based applications | Amazon, Web Developer, Created responsive web interfaces" required></textarea>
+                    <button type="button" class="add-field-btn" onclick="addExperienceField()">+ Add Another Experience</button>
+                    <div id="additional-experience"></div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2><i class="fas fa-graduation-cap"></i> Education</h2>
+                <div class="form-group">
+                    <label for="education">Education (Required)</label>
+                    <p class="help-text">Format: Degree, Institution, Year | Degree, Institution, Year</p>
+                    <textarea id="education" name="education" placeholder="Bachelor of Science in Computer Science, University of California, 2020 | Master of Computer Science, Stanford University, 2022" required></textarea>
+                    <button type="button" class="add-field-btn" onclick="addEducationField()">+ Add Another Education</button>
+                    <div id="additional-education"></div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2><i class="fas fa-plus-circle"></i> Additional Information (Optional)</h2>
+                <div class="form-group">
+                    <label for="projects">Projects (Optional)</label>
+                    <p class="help-text">Format: Project Name, Description | Project Name, Description</p>
+                    <textarea id="projects" name="projects" placeholder="Personal Website, Developed a portfolio website using React and Node.js | E-commerce Platform, Built a full-stack e-commerce solution"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Personal Blog or Website (Optional)</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="has_website" value="no" checked onchange="toggleWebsiteInput(this.value)">
+                            <span>No, I don't have a personal blog or website</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="has_website" value="yes" onchange="toggleWebsiteInput(this.value)">
+                            <span>Yes, I have a personal blog or website</span>
+                        </label>
+                    </div>
+                    <div id="website_input" style="display: none; margin-top: 10px;">
+                        <input type="url" id="website" name="website" placeholder="https://www.yourblogorwebsite.com">
+                    </div>
+                </div>
+                
+
+                
+                <div class="form-group">
+                    <label for="certifications">Certifications (Required)</label>
+                    <div id="certifications-container">
+                        <!-- Certifications will be dynamically loaded based on field of work -->
+                        <div class="cert-options" id="cert-options">
+                            <p>Please select a Field of Work to see relevant certifications</p>
+                        </div>
+                    </div>
+                    <div class="manual-certifications">
+                        <label for="additional_certifications">Additional Certifications</label>
+                        <textarea id="additional_certifications" name="additional_certifications" placeholder="Add any additional certifications not listed above, separated by commas"></textarea>
+                    </div>
+                    <input type="hidden" id="certifications" name="certifications" required>
+                </div>
+                
+
+            </div>
+
+
+
+            <div class="form-section">
+                <h2><i class="fas fa-file-export"></i> Output Format</h2>
+                <div class="form-group output-format">
+                    <label class="radio-label">
+                        <input type="radio" name="output_format" value="docx" checked>
+                        <span class="radio-custom"></span>
+                        DOCX
+                    </label>
+                    <label class="radio-label disabled-option">
+                        <input type="radio" name="output_format" value="pdf" disabled>
+                        <span class="radio-custom"></span>
+                        PDF <small>(temporarily unavailable)</small>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="submit-btn"><i class="fas fa-file-download"></i> Generate Resume</button>
+                <button type="reset" class="reset-btn"><i class="fas fa-redo"></i> Reset Form</button>
+            </div>
+        </form>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 Resume Kraft | <a href="https://github.com/Oghenesuvwe-dev/resume-kraft" target="_blank"><i class="fab fa-github"></i> GitHub</a></p>
+    </footer>
+
+    <script>
+        // Handle field of work dropdown change
+        function handleFieldOfWorkChange(value) {
+            const otherField = document.getElementById('other_field_value');
+            
+            if (value === 'other') {
+                otherField.style.display = 'block';
+                otherField.required = true;
+                // Clear skills and certifications for "Other"
+                document.getElementById('skill-options').innerHTML = '<p>Please specify your field of work</p>';
+                document.getElementById('cert-options').innerHTML = '<p>Please specify your field of work</p>';
+            } else {
+                otherField.style.display = 'none';
+                otherField.required = false;
+                otherField.value = '';
+                
+                // Update skills and certifications based on field of work
+                if (value) {
+                    updateSkillsAndCertifications(value);
+                }
+            }
+        }
+        
+        // Toggle the "Other" field input for Location and auto-select languages
+        function toggleOtherLocationInput() {
+            const locationSelect = document.getElementById('location');
+            const otherField = document.getElementById('other_location_value');
+            
+            if (locationSelect.value === 'other') {
+                otherField.style.display = 'block';
+                otherField.required = true;
+                // Clear language selection for "Other"
+                document.querySelectorAll('input[name="languages[]"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+            } else {
+                otherField.style.display = 'none';
+                otherField.required = false;
+                
+                // Auto-select languages based on country
+                autoSelectLanguagesByCountry(locationSelect.value);
+            }
+            
+            // Update the hidden languages field
+            updateLanguagesField();
+        }
+        
+        // Auto-select languages based on country
+        function autoSelectLanguagesByCountry(country) {
+            // Reset all language checkboxes
+            document.querySelectorAll('input[name="languages[]"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            // Define country to language mappings
+            const countryLanguages = {
+                // English-speaking countries
+                'United States': ['English'],
+                'United Kingdom': ['English'],
+                'Canada': ['English', 'French'],
+                'Australia': ['English'],
+                'New Zealand': ['English'],
+                'Ireland': ['English'],
+                'South Africa': ['English'],
+                'Jamaica': ['English'],
+                'Trinidad and Tobago': ['English'],
+                'Bahamas': ['English'],
+                'Barbados': ['English'],
+                'Guyana': ['English'],
+                
+                // Spanish-speaking countries
+                'Spain': ['Spanish'],
+                'Mexico': ['Spanish'],
+                'Argentina': ['Spanish'],
+                'Colombia': ['Spanish'],
+                'Peru': ['Spanish'],
+                'Venezuela': ['Spanish'],
+                'Chile': ['Spanish'],
+                'Ecuador': ['Spanish'],
+                'Guatemala': ['Spanish'],
+                'Cuba': ['Spanish'],
+                'Bolivia': ['Spanish'],
+                'Dominican Republic': ['Spanish'],
+                'Honduras': ['Spanish'],
+                'Paraguay': ['Spanish'],
+                'El Salvador': ['Spanish'],
+                'Nicaragua': ['Spanish'],
+                'Costa Rica': ['Spanish'],
+                'Panama': ['Spanish'],
+                'Uruguay': ['Spanish'],
+                'Equatorial Guinea': ['Spanish', 'French'],
+                
+                // French-speaking countries
+                'France': ['French'],
+                'Belgium': ['French', 'German'],
+                'Switzerland': ['German', 'French'],
+                'Luxembourg': ['French', 'German'],
+                'Monaco': ['French'],
+                'Haiti': ['French'],
+                'Ivory Coast': ['French'],
+                'Senegal': ['French'],
+                'Mali': ['French'],
+                'Burkina Faso': ['French'],
+                'Benin': ['French'],
+                'Niger': ['French'],
+                'Togo': ['French'],
+                'Congo': ['French'],
+                'Madagascar': ['French'],
+                'Cameroon': ['French', 'English'],
+                
+                // German-speaking countries
+                'Germany': ['German'],
+                'Austria': ['German'],
+                'Liechtenstein': ['German'],
+                
+                // Mandarin-speaking countries
+                'China': ['Mandarin'],
+                'Taiwan': ['Mandarin'],
+                'Singapore': ['English', 'Mandarin'],
+                'Malaysia': ['Mandarin', 'English'],
+                
+                // Other multilingual countries
+                'India': ['English'],
+                'Philippines': ['English'],
+                'Netherlands': ['English', 'German'],
+                'Sweden': ['English'],
+                'Norway': ['English'],
+                'Denmark': ['English'],
+                'Finland': ['English'],
+                'Iceland': ['English'],
+                'Israel': ['English'],
+                'United Arab Emirates': ['English', 'Arabic'],
+                'Qatar': ['English', 'Arabic'],
+                'Saudi Arabia': ['English', 'Arabic'],
+                'Japan': ['English'],
+                'South Korea': ['English'],
+                'Brazil': ['Portuguese', 'English'],
+                'Portugal': ['Portuguese', 'English'],
+                'Italy': ['Italian', 'English'],
+                'Greece': ['Greek', 'English'],
+                'Russia': ['Russian', 'English'],
+                'Ukraine': ['Ukrainian', 'Russian', 'English'],
+                'Poland': ['Polish', 'English'],
+                'Czech Republic': ['Czech', 'English'],
+                'Hungary': ['Hungarian', 'English'],
+                'Romania': ['Romanian', 'English'],
+                'Bulgaria': ['Bulgarian', 'English'],
+                'Turkey': ['Turkish', 'English']
+            };
+            
+            // Check if we have language data for this country
+            if (countryLanguages[country]) {
+                // Select the appropriate language checkboxes
+                countryLanguages[country].forEach(language => {
+                    const checkbox = document.querySelector(`input[name="languages[]"][value="${language}"]`);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    } else if (['English', 'Spanish', 'French', 'German', 'Mandarin'].indexOf(language) === -1) {
+                        // If it's not one of our checkbox languages, add it to additional languages
+                        const additionalLangs = document.getElementById('additional_languages');
+                        if (additionalLangs.value) {
+                            if (!additionalLangs.value.includes(language)) {
+                                additionalLangs.value += ', ' + language;
+                            }
+                        } else {
+                            additionalLangs.value = language;
+                        }
+                    }
+                });
+                
+                // Update the hidden languages field
+                updateLanguagesField();
+            }
+        }
+        
+        // Handle social media dropdown selection
+        function handleSocialMediaSelection() {
+            const select = document.getElementById('social_media_select');
+            const selectedValue = select.value;
+            
+            if (selectedValue) {
+                const inputDiv = document.getElementById(selectedValue + '_input');
+                if (inputDiv) {
+                    inputDiv.style.display = 'block';
+                    // Reset the dropdown
+                    setTimeout(() => {
+                        select.selectedIndex = 0;
+                    }, 100);
+                }
+            }
+        }
+        
+        // Remove social media input
+        function removeSocialMedia(inputId) {
+            const inputDiv = document.getElementById(inputId);
+            if (inputDiv) {
+                const input = inputDiv.querySelector('input');
+                if (input) input.value = '';
+                inputDiv.style.display = 'none';
+            }
+        }
+        
+        // Toggle website/blog input field
+        function toggleWebsiteInput(value) {
+            const websiteInput = document.getElementById('website_input');
+            if (value === 'yes') {
+                websiteInput.style.display = 'block';
+            } else {
+                websiteInput.style.display = 'none';
+                document.getElementById('website').value = '';
+            }
+        }
+        
+        // Field of work data for skills and certifications
+        const fieldData = {
+            "Frontend Developer": {
+                skills: ["HTML/CSS", "JavaScript", "React", "Angular", "Vue.js", "TypeScript", "Responsive Design", "SASS/LESS"],
+                certifications: ["AWS Certified Front-End Specialist", "Meta Front-End Developer", "JavaScript Certification", "React Developer Certification", "Google Mobile Web Specialist"]
+            },
+            "Backend Developer": {
+                skills: ["Node.js", "Python", "Java", "C#/.NET", "PHP", "Ruby", "SQL", "NoSQL"],
+                certifications: ["AWS Certified Developer", "Microsoft Certified: Azure Developer", "Oracle Certified Professional", "Google Cloud Professional Developer", "MongoDB Certified Developer"]
+            },
+            "Full-Stack Developer": {
+                skills: ["MERN Stack", "MEAN Stack", "Django", "Flask", "Ruby on Rails", "Spring Boot", "GraphQL", "RESTful APIs"],
+                certifications: ["AWS Certified Full Stack Developer", "Full Stack Web Developer Nanodegree", "IBM Full Stack Cloud Developer", "Meta Full Stack Developer", "Certified Full Stack Developer"]
+            },
+            "DevOps Engineer": {
+                skills: ["Docker", "Kubernetes", "AWS", "Azure", "GCP", "CI/CD", "Terraform", "Jenkins"],
+                certifications: ["AWS Certified DevOps Engineer", "Microsoft Certified: DevOps Engineer", "Docker Certified Associate", "Kubernetes Administrator", "GitLab Certified"]
+            },
+            "Cloud Engineer": {
+                skills: ["AWS", "Azure", "GCP", "Cloud Infrastructure", "IaC", "Serverless", "Microservices", "Cloud Security"],
+                certifications: ["AWS Certified Solutions Architect", "Microsoft Certified: Azure Administrator", "Google Cloud Certified - Professional Cloud Architect", "CompTIA Cloud+", "Certified Cloud Security Professional (CCSP)"]
+            },
+            "Cloud Architect": {
+                skills: ["Multi-Cloud Architecture", "Cloud Migration", "Disaster Recovery", "High Availability", "Cost Optimization", "Cloud Governance", "Enterprise Architecture", "Solution Design"],
+                certifications: ["AWS Certified Solutions Architect - Professional", "Microsoft Certified: Azure Solutions Architect", "Google Cloud Certified - Professional Cloud Architect", "IBM Certified Cloud Solution Architect", "Certified Cloud Security Professional (CCSP)"]
+            },
+            "Cloud Security Engineer": {
+                skills: ["Cloud Security Controls", "Identity & Access Management", "Security Automation", "Compliance", "Threat Detection", "Encryption", "Network Security", "Security Posture Management"],
+                certifications: ["AWS Certified Security - Specialty", "Microsoft Certified: Azure Security Engineer", "Google Cloud - Professional Cloud Security Engineer", "Certified Cloud Security Professional (CCSP)", "Certificate of Cloud Security Knowledge (CCSK)"]
+            },
+            "Data Scientist": {
+                skills: ["Python", "R", "SQL", "Pandas", "NumPy", "Data Visualization", "Statistical Analysis", "Big Data"],
+                certifications: ["IBM Data Science Professional", "Microsoft Certified: Data Scientist", "Google Data Analytics", "SAS Certified Data Scientist", "Cloudera Certified Data Scientist"]
+            },
+            "Machine Learning Engineer": {
+                skills: ["TensorFlow", "PyTorch", "Scikit-learn", "Deep Learning", "NLP", "Computer Vision", "Reinforcement Learning", "MLOps"],
+                certifications: ["AWS Certified Machine Learning", "Google Professional ML Engineer", "TensorFlow Developer Certificate", "Microsoft Certified: Azure AI Engineer", "IBM AI Engineering"]
+            },
+            "UI/UX Designer": {
+                skills: ["Figma", "Adobe XD", "Sketch", "User Research", "Wireframing", "Prototyping", "Interaction Design", "Visual Design"],
+                certifications: ["Google UX Design", "Certified User Experience Professional", "Adobe XD Certification", "Interaction Design Foundation", "Nielsen Norman Group UX Certification"]
+            },
+            "Product Manager": {
+                skills: ["Agile", "Scrum", "Jira", "Product Strategy", "User Stories", "Roadmapping", "Stakeholder Management", "Market Research"],
+                certifications: ["Certified Product Manager", "Agile Certified Product Manager", "Scrum Product Owner", "Product Management Certification", "Professional Scrum Product Owner"]
+            },
+            "QA Engineer": {
+                skills: ["Manual Testing", "Automated Testing", "Selenium", "JUnit/TestNG", "API Testing", "Performance Testing", "Test Planning", "Bug Tracking"],
+                certifications: ["ISTQB Certified Tester", "Certified Software Test Engineer", "Selenium Certification", "QA Automation Engineer", "Performance Testing Certification"]
+            }
+        };
+        
+        // Check if any field of work radio button is selected
+        document.querySelectorAll('input[name="field_of_work"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value !== 'other') {
+                    const otherField = document.getElementById('other_field_value');
+                    otherField.style.display = 'none';
+                    otherField.required = false;
+                    
+                    // Update skills and certifications based on field of work
+                    updateSkillsAndCertifications(this.value);
+                } else {
+                    // Clear skills and certifications for "Other"
+                    document.getElementById('skill-options').innerHTML = '<p>Please specify your field of work</p>';
+                    document.getElementById('cert-options').innerHTML = '<p>Please specify your field of work</p>';
+                }
+            });
+        });
+        
+        // Function to update skills and certifications based on field of work
+        function updateSkillsAndCertifications(field) {
+            if (fieldData[field]) {
+                // Update skills
+                const skillsContainer = document.getElementById('skill-options');
+                let skillsHTML = '<div class="skill-checkboxes">';
+                
+                fieldData[field].skills.forEach(skill => {
+                    skillsHTML += `
+                        <label class="skill-checkbox">
+                            <input type="checkbox" name="skills[]" value="${skill}" onchange="updateSkillsField()">
+                            <span>${skill}</span>
+                        </label>
+                    `;
+                });
+                
+                skillsHTML += '</div>';
+                skillsContainer.innerHTML = skillsHTML;
+                
+                // Update certifications
+                const certsContainer = document.getElementById('cert-options');
+                let certsHTML = '<div class="cert-checkboxes">';
+                
+                fieldData[field].certifications.forEach(cert => {
+                    certsHTML += `
+                        <label class="cert-checkbox">
+                            <input type="checkbox" name="certifications[]" value="${cert}" onchange="updateCertificationsField()">
+                            <span>${cert}</span>
+                        </label>
+                    `;
+                });
+                
+                certsHTML += '</div>';
+                certsContainer.innerHTML = certsHTML;
+            }
+        }
+        
+        // Function to update the hidden skills field
+        function updateSkillsField() {
+            const selectedSkills = [];
+            document.querySelectorAll('input[name="skills[]"]:checked').forEach(checkbox => {
+                selectedSkills.push(checkbox.value);
+            });
+            
+            const additionalSkills = document.getElementById('additional_skills').value.trim();
+            if (additionalSkills) {
+                selectedSkills.push(additionalSkills);
+            }
+            
+            document.getElementById('skills').value = selectedSkills.join(', ');
+        }
+        
+        // Function to update the hidden certifications field
+        function updateCertificationsField() {
+            const selectedCerts = [];
+            document.querySelectorAll('input[name="certifications[]"]:checked').forEach(checkbox => {
+                selectedCerts.push(checkbox.value);
+            });
+            
+            const additionalCerts = document.getElementById('additional_certifications').value.trim();
+            if (additionalCerts) {
+                selectedCerts.push(additionalCerts);
+            }
+            
+            document.getElementById('certifications').value = selectedCerts.join(', ');
+        }
+        
+        // Function to update the hidden languages field
+        function updateLanguagesField() {
+            const selectedLanguages = [];
+            document.querySelectorAll('input[name="languages[]"]:checked').forEach(checkbox => {
+                selectedLanguages.push(checkbox.value);
+            });
+            
+            const additionalLanguages = document.getElementById('additional_languages').value.trim();
+            if (additionalLanguages) {
+                // Split by commas and add each language individually
+                const additionalLangsArray = additionalLanguages.split(',').map(lang => lang.trim());
+                additionalLangsArray.forEach(lang => {
+                    if (lang && !selectedLanguages.includes(lang)) {
+                        selectedLanguages.push(lang);
+                    }
+                });
+            }
+            
+            document.getElementById('languages').value = selectedLanguages.join(', ');
+            
+            // Show a brief notification that languages were auto-selected
+            const locationSelect = document.getElementById('location');
+            if (locationSelect.value && locationSelect.value !== 'other' && selectedLanguages.length > 0) {
+                const helpText = document.querySelector('.language-section .help-text');
+                const originalText = helpText.textContent;
+                helpText.textContent = `✓ Languages auto-selected for ${locationSelect.value}`;
+                helpText.style.color = '#27ae60';
+                
+                setTimeout(() => {
+                    helpText.textContent = originalText;
+                    helpText.style.color = '#666';
+                }, 2000);
+            }
+        }
+        
+        // Add change event listeners for additional fields
+        document.getElementById('additional_skills').addEventListener('input', updateSkillsField);
+        document.getElementById('additional_certifications').addEventListener('input', updateCertificationsField);
+        document.getElementById('additional_languages').addEventListener('input', updateLanguagesField);
+        
+        // Add change event listeners for language checkboxes
+        document.querySelectorAll('input[name="languages[]"]').forEach(checkbox => {
+            checkbox.addEventListener('change', updateLanguagesField);
+        });
+        
+        // Auto-select languages based on initial country selection if any
+        document.addEventListener('DOMContentLoaded', function() {
+            const locationSelect = document.getElementById('location');
+            if (locationSelect.value && locationSelect.value !== 'other') {
+                autoSelectLanguagesByCountry(locationSelect.value);
+            }
+            
+            // Make sure the language checkboxes update the hidden field
+            document.querySelectorAll('input[name="languages[]"]').forEach(checkbox => {
+                checkbox.addEventListener('change', updateLanguagesField);
+            });
+            
+            // Make sure the additional languages input updates the hidden field
+            document.getElementById('additional_languages').addEventListener('input', updateLanguagesField);
+        });
+        
+        // Auto-fill years of experience based on experience level
+        function updateYearsOfExperience(experienceLevel) {
+            const yearsInput = document.getElementById('years_of_experience');
+            
+            // Set default years based on experience level
+            switch(experienceLevel) {
+                case 'Intern':
+                    yearsInput.value = '0';
+                    break;
+                case 'Entry Level':
+                    yearsInput.value = '1';
+                    break;
+                case 'Junior':
+                    yearsInput.value = '2';
+                    break;
+                case 'Mid-Level':
+                    yearsInput.value = '4';
+                    break;
+                case 'Senior':
+                    yearsInput.value = '8';
+                    break;
+                case 'Lead':
+                    yearsInput.value = '10';
+                    break;
+                case 'Manager':
+                    yearsInput.value = '12';
+                    break;
+                default:
+                    yearsInput.value = '';
+            }
+            
+            // Remove placeholder when a value is set
+            if (yearsInput.value) {
+                yearsInput.placeholder = '';
+            } else {
+                yearsInput.placeholder = 'Years of Experience';
+            }
+        }
+        
+        // Reset placeholder on form reset
+        document.querySelector('.reset-btn').addEventListener('click', function() {
+            setTimeout(() => {
+                document.getElementById('years_of_experience').placeholder = 'Years of Experience';
+            }, 10);
+        });
+        
+        function addExperienceField() {
+            const container = document.getElementById('additional-experience');
+            const fieldDiv = document.createElement('div');
+            fieldDiv.className = 'additional-field';
+            fieldDiv.innerHTML = `
+                <textarea placeholder="Company, Position, Description"></textarea>
+                <button type="button" class="remove-field-btn" onclick="this.parentElement.remove()">Remove</button>
+            `;
+            container.appendChild(fieldDiv);
+        }
+        
+        function addEducationField() {
+            const container = document.getElementById('additional-education');
+            const fieldDiv = document.createElement('div');
+            fieldDiv.className = 'additional-field';
+            fieldDiv.innerHTML = `
+                <textarea placeholder="Degree, Institution, Year"></textarea>
+                <button type="button" class="remove-field-btn" onclick="this.parentElement.remove()">Remove</button>
+            `;
+            container.appendChild(fieldDiv);
+        }
+        
+        // Cloud storage integration
+        document.getElementById('onedrive-btn').addEventListener('click', function() {
+            initiateCloudUpload('onedrive');
+        });
+        
+        document.getElementById('gdrive-btn').addEventListener('click', function() {
+            initiateCloudUpload('gdrive');
+        });
+        
+        document.getElementById('proton-btn').addEventListener('click', function() {
+            initiateCloudUpload('proton');
+        });
+        
+        function initiateCloudUpload(provider) {
+            // This would be replaced with actual cloud provider SDK integration
+            alert(`Connecting to ${provider}... This feature will be implemented with the appropriate SDK.`);
+            // In a real implementation, this would open the cloud provider's file picker
+            // and handle the OAuth flow and file selection
+        }
+        
+        // File handling and parsing
+        document.getElementById('existing_resume').addEventListener('change', function() {
+            const fileInput = this;
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            
+            if (fileInput.files.length > 0) {
+                const fileSize = fileInput.files[0].size;
+                if (fileSize > maxSize) {
+                    alert('File size exceeds 5MB limit. Please select a smaller file.');
+                    fileInput.value = '';
+                    return;
+                }
+                
+                // Show loading indicator with overlay
+                const overlay = document.createElement('div');
+                overlay.id = 'parsing-overlay';
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                overlay.style.zIndex = '1000';
+                overlay.style.display = 'flex';
+                overlay.style.justifyContent = 'center';
+                overlay.style.alignItems = 'center';
+                
+                const loadingMsg = document.createElement('div');
+                loadingMsg.id = 'parsing-message';
+                loadingMsg.style.backgroundColor = 'white';
+                loadingMsg.style.padding = '20px 40px';
+                loadingMsg.style.borderRadius = '5px';
+                loadingMsg.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
+                loadingMsg.style.textAlign = 'center';
+                loadingMsg.innerHTML = `
+                    <div style="margin-bottom: 15px;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: #3498db;"></i>
+                    </div>
+                    <h3 style="margin: 0; color: #333;">Parsing Resume</h3>
+                    <p style="margin: 5px 0 0; color: #666;">Please wait while we extract information from your resume...</p>
+                `;
+                
+                overlay.appendChild(loadingMsg);
+                document.body.appendChild(overlay);
+                
+                // Create form data for upload
+                const formData = new FormData();
+                formData.append('resume', fileInput.files[0]);
+                
+                // Send to server for parsing
+                fetch('/parse-resume', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Remove loading overlay
+                    document.getElementById('parsing-overlay').remove();
+                    
+                    if (data.error) {
+                        alert('Error parsing resume: ' + data.error);
+                        return;
+                    }
+                    
+                    // Log parsed data for debugging
+                    console.log('Parsed resume data:', data);
+                    
+                    // Autofill the form
+                    autofillForm(data);
+                    
+                    // Add additional checks to ensure all fields are populated
+                    setTimeout(() => {
+                        // If no field of work is selected, select the first one
+                        if (!document.querySelector('input[name="field_of_work"]:checked')) {
+                            const firstFieldOption = document.querySelector('input[name="field_of_work"]');
+                            if (firstFieldOption) {
+                                firstFieldOption.checked = true;
+                                firstFieldOption.dispatchEvent(new Event('change'));
+                            }
+                        }
+                        
+                        // If no experience level is selected, select the first one
+                        if (!document.querySelector('input[name="experience_level"]:checked')) {
+                            const firstExpOption = document.querySelector('input[name="experience_level"]');
+                            if (firstExpOption) {
+                                firstExpOption.checked = true;
+                                firstExpOption.dispatchEvent(new Event('change'));
+                            }
+                        }
+                        
+                        // Make sure all required fields have values from parsed data, NOT placeholders
+                        const requiredFields = ['full_name', 'email', 'phone', 'location', 'summary', 'experience', 'education'];
+                        requiredFields.forEach(field => {
+                            const element = document.getElementById(field);
+                            if (element && data[field] && data[field].trim()) {
+                                element.value = data[field];
+                            }
+                            // Do NOT use placeholder values as actual data
+                        });
+                        
+                        // Make sure hidden fields are populated
+                        updateSkillsField();
+                        updateCertificationsField();
+                        updateLanguagesField();
+                    }, 2000);
+                    
+                    // Check which fields were successfully filled
+                    checkAutofillStatus(data);
+                    
+                    // Scroll to the top of the form to show the success message
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Show success message with more visibility
+                    const successMsg = document.createElement('div');
+                    successMsg.id = 'resume-parsed-success';
+                    successMsg.innerHTML = `
+                        <div style="background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; padding: 15px; margin: 15px 0;">
+                            <h4 style="color: #155724; margin-top: 0;"><i class="fas fa-check-circle"></i> Resume Successfully Imported!</h4>
+                            <p style="color: #155724; margin-bottom: 5px;">Your resume has been parsed and the form has been auto-filled.</p>
+                            <p style="color: #155724; margin-bottom: 0;">Please review the information and make any necessary adjustments before generating your resume.</p>
+                        </div>
+                    `;
+                    
+                    // Insert at the top of the form for better visibility
+                    const formSection = document.querySelector('.form-section');
+                    formSection.parentNode.insertBefore(successMsg, formSection);
+                    
+                    // Add a subtle highlight to all auto-filled fields
+                    const autoFilledFields = ['full_name', 'email', 'phone', 'location', 'summary', 'experience', 'education'];
+                    autoFilledFields.forEach(field => {
+                        const element = document.getElementById(field);
+                        if (element && element.value) {
+                            element.style.backgroundColor = '#f0f9ff';
+                            element.style.borderColor = '#bce8f1';
+                        }
+                    });
+                    
+                    // Remove success message after 10 seconds
+                    setTimeout(() => {
+                        if (document.getElementById('resume-parsed-success')) {
+                            document.getElementById('resume-parsed-success').remove();
+                        }
+                    }, 10000);
+                })
+                .catch(error => {
+                    // Remove loading overlay
+                    if (document.getElementById('parsing-overlay')) {
+                        document.getElementById('parsing-overlay').remove();
+                    }
+                    
+                    alert('Error parsing resume: ' + error);
+                });
+            }
+        });
+        
+        // Function to autofill the form with parsed data
+        function autofillForm(data) {
+            console.log('Autofilling form with data:', data);
+            
+            // Clear any placeholder values first
+            document.getElementById('full_name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('summary').value = '';
+            document.getElementById('experience').value = '';
+            document.getElementById('education').value = '';
+            document.getElementById('skills').value = '';
+            document.getElementById('additional_skills').value = '';
+            document.getElementById('certifications').value = '';
+            document.getElementById('additional_certifications').value = '';
+            
+            // Fill in basic fields with fallbacks and validation
+            // Full Name
+            if (data.full_name && data.full_name.trim() !== '') {
+                document.getElementById('full_name').value = data.full_name;
+            } else if (data.name && data.name.trim() !== '') {
+                document.getElementById('full_name').value = data.name;
+            } else {
+                // Try to extract name from the first line of the resume
+                const firstLine = data.summary ? data.summary.split('\n')[0] : '';
+                if (firstLine && firstLine.length < 50 && /^[A-Z][a-z]+(\s[A-Z][a-z]+)+$/.test(firstLine)) {
+                    document.getElementById('full_name').value = firstLine.trim();
+                }
+                
+                // If email is available, try to extract name from email
+                if (!document.getElementById('full_name').value && data.email) {
+                    const emailName = data.email.split('@')[0];
+                    if (emailName) {
+                        // Convert email name to proper case (e.g., john.doe -> John Doe)
+                        const properName = emailName
+                            .replace(/[._]/g, ' ')
+                            .split(' ')
+                            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                            .join(' ');
+                        
+                        document.getElementById('full_name').value = properName;
+                    }
+                }
+            }
+            
+            // Email
+            if (data.email && data.email.trim() !== '') {
+                document.getElementById('email').value = data.email;
+            }
+            
+            // Phone
+            if (data.phone && data.phone.trim() !== '') {
+                document.getElementById('phone').value = data.phone;
+            }
+            
+            // Location
+            if (data.location && data.location.trim() !== '') {
+                // Validate location - make sure it's not just a name
+                const nameWords = (data.full_name || '').toLowerCase().split(/\s+/);
+                const locationWords = data.location.toLowerCase().split(/\s+/);
+                
+                // Check if location is just the name
+                const isLocationName = nameWords.length > 0 && 
+                    locationWords.every(word => nameWords.includes(word));
+                
+                if (!isLocationName) {
+                    // Check if location is too short or doesn't look like a location
+                    if (data.location.length > 3 && /[A-Za-z]+/.test(data.location)) {
+                        // Try to match with a country in our dropdown
+                        const locationSelect = document.getElementById('location');
+                        let locationFound = false;
+                        
+                        for (let i = 0; i < locationSelect.options.length; i++) {
+                            const option = locationSelect.options[i];
+                            if (data.location.toLowerCase().includes(option.value.toLowerCase()) || 
+                                option.value.toLowerCase().includes(data.location.toLowerCase())) {
+                                locationSelect.value = option.value;
+                                locationFound = true;
+                                // Trigger change event to auto-select languages
+                                locationSelect.dispatchEvent(new Event('change'));
+                                break;
+                            }
+                        }
+                        
+                        if (!locationFound) {
+                            // If no match, set to "other" and fill in the custom field
+                            locationSelect.value = 'other';
+                            document.getElementById('other_location_value').value = data.location;
+                            document.getElementById('other_location_value').style.display = 'block';
+                            locationSelect.dispatchEvent(new Event('change'));
+                        }
+                    }
+                }
+            } else {
+                // Try to extract location from the text
+                const commonLocations = [
+                    'New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia',
+                    'San Antonio', 'San Diego', 'Dallas', 'San Jose', 'Austin', 'Jacksonville',
+                    'San Francisco', 'Seattle', 'Denver', 'Washington', 'Boston', 'Atlanta',
+                    'Miami', 'London', 'Toronto', 'Vancouver', 'Sydney', 'Melbourne', 'Berlin',
+                    'Paris', 'Tokyo', 'Singapore', 'Hong Kong', 'Dubai', 'Mumbai', 'Delhi'
+                ];
+                
+                // Check if any common location is mentioned in the summary or experience
+                const textToSearch = (data.summary || '') + ' ' + (data.experience || '');
+                for (const location of commonLocations) {
+                    if (textToSearch.includes(location)) {
+                        document.getElementById('location').value = location;
+                        document.getElementById('location').dispatchEvent(new Event('change'));
+                        break;
+                    }
+                }
+            }
+            
+            // LinkedIn
+            if (data.linkedin && data.linkedin.trim() !== '') {
+                // Show the LinkedIn input field
+                document.getElementById('linkedin_input').style.display = 'block';
+                document.getElementById('linkedin').value = data.linkedin;
+            }
+            
+            // Summary
+            if (data.summary && data.summary.trim() !== '') {
+                document.getElementById('summary').value = data.summary;
+            }
+            
+            // Work Experience - ensure it's properly formatted
+            if (data.experience && data.experience.trim() !== '') {
+                // Make sure experience is properly formatted
+                let formattedExperience = data.experience;
+                
+                // If experience doesn't contain commas, try to format it
+                if (!formattedExperience.includes(',')) {
+                    const expParts = formattedExperience.split('|');
+                    formattedExperience = expParts.map(part => {
+                        // Try to extract company and position
+                        const companyMatch = part.match(/([A-Z][A-Za-z0-9\s&.,]+)/);
+                        const positionMatch = part.match(/([A-Za-z]+\s+(?:Developer|Engineer|Manager|Designer|Analyst|Consultant|Director|Specialist|Lead|Architect|Administrator|Programmer|Scientist|Officer|Coordinator|Associate)[^\n]*)/);
+                        
+                        const company = companyMatch ? companyMatch[0].trim() : 'Company';
+                        const position = positionMatch ? positionMatch[0].trim() : 'Position';
+                        const description = `Worked at ${company}`;
+                        
+                        return `${company}, ${position}, ${description}`;
+                    }).join(' | ');
+                }
+                
+                document.getElementById('experience').value = formattedExperience;
+            }
+            
+            // Education
+            if (data.education && data.education.trim() !== '') {
+                // Make sure education is properly formatted
+                let formattedEducation = data.education;
+                
+                // If education doesn't contain commas or is incomplete, try to format it
+                if (!formattedEducation.includes(',') || formattedEducation.split(',').length < 3) {
+                    const eduParts = formattedEducation.split('|');
+                    formattedEducation = eduParts.map(part => {
+                        const parts = part.split(',');
+                        
+                        // Extract degree, institution, and year
+                        let degree = parts[0] ? parts[0].trim() : 'Degree';
+                        let institution = parts[1] ? parts[1].trim() : 'University';
+                        let year = parts[2] ? parts[2].trim() : 'Year';
+                        
+                        // If we only have one part, try to extract more information
+                        if (parts.length === 1) {
+                            // Try to extract degree
+                            const degreeMatch = part.match(/(Bachelor|Master|PhD|B\.S\.|M\.S\.|B\.A\.|M\.A\.|B\.E\.|M\.E\.|B\.Tech|M\.Tech)[^\n]*/i);
+                            if (degreeMatch) degree = degreeMatch[0].trim();
+                            
+                            // Try to extract institution
+                            const instMatch = part.match(/(University|College|Institute|School)[^\n]*/i);
+                            if (instMatch) institution = instMatch[0].trim();
+                            
+                            // Try to extract year
+                            const yearMatch = part.match(/(19|20)\d{2}/i);
+                            if (yearMatch) year = yearMatch[0].trim();
+                        }
+                        
+                        return `${degree}, ${institution}, ${year}`;
+                    }).join(' | ');
+                }
+                
+                document.getElementById('education').value = formattedEducation;
+            }
+            
+            // Projects
+            if (data.projects && data.projects.trim() !== '') {
+                document.getElementById('projects').value = data.projects;
+            }
+            
+            // Website
+            if (data.website && data.website.trim() !== '') {
+                // Select "Yes" for website
+                document.querySelector('input[name="has_website"][value="yes"]').checked = true;
+                document.getElementById('website_input').style.display = 'block';
+                document.getElementById('website').value = data.website;
+            }
+            
+            // GitHub
+            if (data.github && data.github.trim() !== '') {
+                document.getElementById('github_input').style.display = 'block';
+                document.getElementById('github').value = data.github;
+            }
+            
+            // Process field of work and experience level first as they affect other fields
+            processFieldOfWork(data);
+            processExperienceLevel(data);
+            
+        // Function to process field of work from parsed data
+        function processFieldOfWork(data) {
+            if (data.field_of_work) {
+                // Check if the field of work matches any of our predefined options
+                const fieldOfWorkSelect = document.getElementById('field_of_work');
+                let fieldFound = false;
+                let bestMatch = null;
+                let bestMatchScore = 0;
+                
+                // First try exact match
+                for (let i = 0; i < fieldOfWorkSelect.options.length; i++) {
+                    const option = fieldOfWorkSelect.options[i];
+                    if (option.value.toLowerCase() === data.field_of_work.toLowerCase()) {
+                        fieldOfWorkSelect.value = option.value;
+                        fieldFound = true;
+                        // Trigger change event to update skills and certifications
+                        fieldOfWorkSelect.dispatchEvent(new Event('change'));
+                        break;
+                    }
+                }
+                
+                // If no exact match, try fuzzy matching
+                if (!fieldFound) {
+                    for (let i = 0; i < fieldOfWorkSelect.options.length; i++) {
+                        const option = fieldOfWorkSelect.options[i];
+                        if (option.value !== 'other' && option.value !== '') {
+                            // Calculate similarity score
+                            const optionValue = option.value.toLowerCase();
+                            const fieldValue = data.field_of_work.toLowerCase();
+                            
+                            // Check if one contains the other
+                            if (optionValue.includes(fieldValue) || fieldValue.includes(optionValue)) {
+                                const score = Math.min(optionValue.length, fieldValue.length) / 
+                                             Math.max(optionValue.length, fieldValue.length);
+                                if (score > bestMatchScore) {
+                                    bestMatchScore = score;
+                                    bestMatch = option.value;
+                                }
+                            }
+                            
+                            // Check for word overlap
+                            const optionWords = optionValue.split(/\s+/);
+                            const fieldWords = fieldValue.split(/\s+/);
+                            let wordMatches = 0;
+                            
+                            optionWords.forEach(word => {
+                                if (fieldWords.some(fw => fw.includes(word) || word.includes(fw))) {
+                                    wordMatches++;
+                                }
+                            });
+                            
+                            const wordScore = wordMatches / Math.max(optionWords.length, fieldWords.length);
+                            if (wordScore > bestMatchScore) {
+                                bestMatchScore = wordScore;
+                                bestMatch = option.value;
+                            }
+                        }
+                    }
+                    
+                    // If we found a good match (score > 0.5), use it
+                    if (bestMatch && bestMatchScore > 0.5) {
+                        fieldOfWorkSelect.value = bestMatch;
+                        fieldFound = true;
+                        // Trigger change event
+                        fieldOfWorkSelect.dispatchEvent(new Event('change'));
+                    }
+                }
+                
+                // If no match found, select "Other" and fill in the custom field
+                if (!fieldFound && data.field_of_work) {
+                    fieldOfWorkSelect.value = 'other';
+                    // Explicitly show the other field input
+                    document.getElementById('other_field_value').style.display = 'block';
+                    document.getElementById('other_field_value').required = true;
+                    document.getElementById('other_field_value').value = data.field_of_work;
+                    // Trigger change event
+                    fieldOfWorkSelect.dispatchEvent(new Event('change'));
+                }
+            } else if (data.skills) {
+                // If no field of work but skills are available, try to determine field from skills
+                const skillsList = data.skills.split(',').map(skill => skill.trim().toLowerCase());
+                
+                // Define skill sets for each field
+                const fieldSkills = {
+                    "Frontend Developer": ["html", "css", "javascript", "react", "angular", "vue", "typescript", "sass", "less", "bootstrap", "jquery", "responsive design", "web design", "ui", "ux", "webpack", "babel"],
+                    "Backend Developer": ["python", "java", "c#", "php", "ruby", "node.js", "express", "django", "flask", "spring", "laravel", "sql", "mysql", "postgresql", "mongodb", "api", "rest", "graphql", "microservices"],
+                    "Full-Stack Developer": ["javascript", "typescript", "python", "java", "react", "angular", "vue", "node.js", "express", "django", "flask", "spring", "sql", "nosql", "rest api", "graphql", "mern", "mean", "full stack"],
+                    "DevOps Engineer": ["docker", "kubernetes", "aws", "azure", "gcp", "ci/cd", "jenkins", "gitlab ci", "github actions", "terraform", "ansible", "puppet", "chef", "linux", "shell scripting", "monitoring", "logging", "cloud"],
+                    "Data Scientist": ["python", "r", "sql", "pandas", "numpy", "scipy", "scikit-learn", "tensorflow", "pytorch", "statistics", "data analysis", "data visualization", "machine learning", "big data", "hadoop", "spark", "tableau", "power bi"],
+                    "Machine Learning Engineer": ["python", "tensorflow", "pytorch", "keras", "scikit-learn", "deep learning", "neural networks", "nlp", "computer vision", "reinforcement learning", "mlops", "feature engineering", "model deployment", "ai"],
+                    "UI/UX Designer": ["figma", "sketch", "adobe xd", "photoshop", "illustrator", "invision", "wireframing", "prototyping", "user research", "usability testing", "interaction design", "visual design", "ui", "ux", "design systems"],
+                    "Product Manager": ["agile", "scrum", "kanban", "jira", "confluence", "product strategy", "roadmapping", "user stories", "market research", "competitive analysis", "stakeholder management", "product development", "product launch"],
+                    "QA Engineer": ["selenium", "cypress", "jest", "mocha", "junit", "testng", "manual testing", "automated testing", "test plans", "test cases", "bug tracking", "jira", "qa", "quality assurance", "regression testing"]
+                };
+                
+                // Score each field based on skills match
+                const fieldScores = {};
+                for (const [field, skills] of Object.entries(fieldSkills)) {
+                    fieldScores[field] = 0;
+                    for (const skill of skillsList) {
+                        if (skills.some(s => skill.includes(s) || s.includes(skill))) {
+                            fieldScores[field]++;
+                        }
+                    }
+                }
+                
+                // Find the field with the highest score
+                let bestField = null;
+                let maxScore = 0;
+                for (const [field, score] of Object.entries(fieldScores)) {
+                    if (score > maxScore) {
+                        maxScore = score;
+                        bestField = field;
+                    }
+                }
+                
+                // If we found a good match, select it
+                if (bestField && maxScore > 2) {
+                    const fieldOfWorkRadios = document.querySelectorAll('input[name="field_of_work"]');
+                    fieldOfWorkRadios.forEach(radio => {
+                        if (radio.value === bestField) {
+                            radio.checked = true;
+                            radio.dispatchEvent(new Event('change'));
+                        }
+                    });
+                }
+            }
+        }
+            
+        // Function to process experience level from parsed data
+        function processExperienceLevel(data) {
+            if (data.experience_level || data.years_of_experience) {
+                const expLevelSelect = document.getElementById('experience_level');
+                let levelFound = false;
+                
+                // First try exact match on experience level
+                if (data.experience_level) {
+                    for (let i = 0; i < expLevelSelect.options.length; i++) {
+                        const option = expLevelSelect.options[i];
+                        if (option.value.toLowerCase() === data.experience_level.toLowerCase()) {
+                            expLevelSelect.value = option.value;
+                            levelFound = true;
+                            updateYearsOfExperience(option.value); // Update years of experience
+                            break;
+                        }
+                    }
+                }
+                
+                // If no match or no experience level provided, try to determine from years
+                if (!levelFound && data.years_of_experience) {
+                    const years = parseInt(data.years_of_experience);
+                    let levelToSelect = '';
+                    
+                    if (!isNaN(years)) {
+                        if (years === 0) levelToSelect = 'Intern';
+                        else if (years <= 1) levelToSelect = 'Entry Level';
+                        else if (years <= 3) levelToSelect = 'Junior';
+                        else if (years <= 6) levelToSelect = 'Mid-Level';
+                        else if (years <= 9) levelToSelect = 'Senior';
+                        else if (years <= 12) levelToSelect = 'Lead';
+                        else levelToSelect = 'Manager';
+                        
+                        // Select the appropriate option
+                        for (let i = 0; i < expLevelSelect.options.length; i++) {
+                            const option = expLevelSelect.options[i];
+                            if (option.value === levelToSelect) {
+                                expLevelSelect.value = option.value;
+                                levelFound = true;
+                                // Don't call updateYearsOfExperience here as we already have the years
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                // If we found a level but years weren't set, update years
+                if (levelFound && !document.getElementById('years_of_experience').value) {
+                    updateYearsOfExperience(expLevelSelect.value);
+                }
+                
+                // Set years of experience if available
+                if (data.years_of_experience) {
+                    document.getElementById('years_of_experience').value = data.years_of_experience;
+                    document.getElementById('years_of_experience').placeholder = '';
+                }
+                
+                // Trigger change event
+                expLevelSelect.dispatchEvent(new Event('change'));
+            } else if (data.experience) {
+                // If no experience level or years but we have work experience, try to estimate
+                const experienceText = data.experience;
+                const companies = experienceText.split('|').length;
+                
+                // Rough estimate based on number of companies
+                let estimatedYears = companies * 2;  // Assume 2 years per company
+                let levelToSelect = '';
+                
+                if (estimatedYears === 0) levelToSelect = 'Intern';
+                else if (estimatedYears <= 1) levelToSelect = 'Entry Level';
+                else if (estimatedYears <= 3) levelToSelect = 'Junior';
+                else if (estimatedYears <= 6) levelToSelect = 'Mid-Level';
+                else if (estimatedYears <= 9) levelToSelect = 'Senior';
+                else if (estimatedYears <= 12) levelToSelect = 'Lead';
+                else levelToSelect = 'Manager';
+                
+                // Select the appropriate option
+                const expLevelSelect = document.getElementById('experience_level');
+                for (let i = 0; i < expLevelSelect.options.length; i++) {
+                    const option = expLevelSelect.options[i];
+                    if (option.value === levelToSelect) {
+                        expLevelSelect.value = option.value;
+                        // Set estimated years
+                        document.getElementById('years_of_experience').value = estimatedYears;
+                        document.getElementById('years_of_experience').placeholder = '';
+                        // Trigger change event
+                        expLevelSelect.dispatchEvent(new Event('change'));
+                        break;
+                    }
+                }
+            }
+        }
+            
+            // Handle skills
+            if (data.skills) {
+                // Wait longer for the skills checkboxes to be populated
+                setTimeout(() => {
+                    const skillsList = data.skills.split(',').map(skill => skill.trim());
+                    
+                    // Check matching skills (case-insensitive and partial matching)
+                    document.querySelectorAll('input[name="skills[]"]').forEach(checkbox => {
+                        const checkboxValue = checkbox.value.toLowerCase();
+                        if (skillsList.some(skill => {
+                            const skillLower = skill.toLowerCase();
+                            return skillLower === checkboxValue || 
+                                   skillLower.includes(checkboxValue) || 
+                                   checkboxValue.includes(skillLower);
+                        })) {
+                            checkbox.checked = true;
+                        }
+                    });
+                    
+                    // Add non-matching skills to additional skills
+                    const matchedSkills = Array.from(document.querySelectorAll('input[name="skills[]"]:checked')).map(cb => cb.value.toLowerCase());
+                    const unmatchedSkills = skillsList.filter(skill => {
+                        const skillLower = skill.toLowerCase();
+                        return !matchedSkills.some(matched => 
+                            skillLower === matched || 
+                            skillLower.includes(matched) || 
+                            matched.includes(skillLower)
+                        );
+                    });
+                    
+                    if (unmatchedSkills.length > 0) {
+                        document.getElementById('additional_skills').value = unmatchedSkills.join(', ');
+                    }
+                    
+                    // Update the hidden field
+                    updateSkillsField();
+                    
+                    // Ensure the hidden field is populated even if no checkboxes are checked
+                    if (document.getElementById('skills').value === '') {
+                        document.getElementById('skills').value = data.skills;
+                    }
+                }, 1500);  // Increased timeout for better reliability
+            }
+            
+            // Handle certifications
+            if (data.certifications) {
+                // Wait longer for the certification checkboxes to be populated
+                setTimeout(() => {
+                    const certsList = data.certifications.split(',').map(cert => cert.trim());
+                    
+                    // Check matching certifications (case-insensitive and partial matching)
+                    document.querySelectorAll('input[name="certifications[]"]').forEach(checkbox => {
+                        const checkboxValue = checkbox.value.toLowerCase();
+                        if (certsList.some(cert => {
+                            const certLower = cert.toLowerCase();
+                            return certLower === checkboxValue || 
+                                   certLower.includes(checkboxValue) || 
+                                   checkboxValue.includes(certLower);
+                        })) {
+                            checkbox.checked = true;
+                        }
+                    });
+                    
+                    // Add non-matching certifications to additional certifications
+                    const matchedCerts = Array.from(document.querySelectorAll('input[name="certifications[]"]:checked')).map(cb => cb.value.toLowerCase());
+                    const unmatchedCerts = certsList.filter(cert => {
+                        const certLower = cert.toLowerCase();
+                        return !matchedCerts.some(matched => 
+                            certLower === matched || 
+                            certLower.includes(matched) || 
+                            matched.includes(certLower)
+                        );
+                    });
+                    
+                    if (unmatchedCerts.length > 0) {
+                        document.getElementById('additional_certifications').value = unmatchedCerts.join(', ');
+                    }
+                    
+                    // Update the hidden field
+                    updateCertificationsField();
+                    
+                    // Ensure the hidden field is populated even if no checkboxes are checked
+                    if (document.getElementById('certifications').value === '') {
+                        document.getElementById('certifications').value = data.certifications;
+                    }
+                }, 1500);  // Increased timeout for better reliability
+            }
+            
+            // Handle languages
+            if (data.languages) {
+                const languagesList = data.languages.split(',').map(lang => lang.trim());
+                
+                // Common language variations
+                const languageVariations = {
+                    'english': ['english', 'en', 'eng', 'native english', 'fluent english'],
+                    'spanish': ['spanish', 'es', 'esp', 'español', 'castellano'],
+                    'french': ['french', 'fr', 'fra', 'français', 'francais'],
+                    'german': ['german', 'de', 'deu', 'deutsch'],
+                    'mandarin': ['mandarin', 'chinese', 'zh', 'cmn', '中文']
+                };
+                
+                // Check matching languages with variations
+                document.querySelectorAll('input[name="languages[]"]').forEach(checkbox => {
+                    const checkboxLang = checkbox.value.toLowerCase();
+                    const variations = languageVariations[checkboxLang] || [checkboxLang];
+                    
+                    if (languagesList.some(lang => {
+                        const langLower = lang.toLowerCase();
+                        return variations.some(v => langLower.includes(v) || v.includes(langLower));
+                    })) {
+                        checkbox.checked = true;
+                    }
+                });
+                
+                // Add non-matching languages to additional languages
+                const matchedLangs = [];
+                document.querySelectorAll('input[name="languages[]"]:checked').forEach(cb => {
+                    const checkboxLang = cb.value.toLowerCase();
+                    const variations = languageVariations[checkboxLang] || [checkboxLang];
+                    matchedLangs.push(...variations);
+                });
+                
+                const unmatchedLangs = languagesList.filter(lang => {
+                    const langLower = lang.toLowerCase();
+                    return !matchedLangs.some(matched => langLower.includes(matched) || matched.includes(langLower));
+                });
+                
+                if (unmatchedLangs.length > 0) {
+                    document.getElementById('additional_languages').value = unmatchedLangs.join(', ');
+                }
+                
+                // Update the hidden field
+                updateLanguagesField();
+                
+                // Ensure the hidden field is populated even if no checkboxes are checked
+                if (document.getElementById('languages').value === '') {
+                    document.getElementById('languages').value = data.languages;
+                }
+            }
+        }
+        
+        // Function to check which fields were successfully autofilled
+        function checkAutofillStatus(data) {
+            const status = {
+                personal: {},
+                professional: {},
+                skills: {},
+                experience: {},
+                education: {},
+                additional: {}
+            };
+            
+            // Check personal information
+            status.personal.name = data.full_name && document.getElementById('full_name').value === data.full_name;
+            status.personal.email = data.email && document.getElementById('email').value === data.email;
+            status.personal.phone = data.phone && document.getElementById('phone').value === data.phone;
+            status.personal.location = data.location && document.getElementById('location').value === data.location;
+            status.personal.linkedin = data.linkedin && document.getElementById('linkedin').value === data.linkedin;
+            
+            // Check professional details
+            status.professional.summary = data.summary && document.getElementById('summary').value === data.summary;
+            
+            // Check field of work
+            if (data.field_of_work) {
+                const fieldOfWorkRadios = document.querySelectorAll('input[name="field_of_work"]');
+                let fieldFound = false;
+                
+                fieldOfWorkRadios.forEach(radio => {
+                    if (radio.checked) {
+                        if (radio.value === 'other') {
+                            fieldFound = document.getElementById('other_field_value').value === data.field_of_work;
+                        } else {
+                            fieldFound = radio.value.toLowerCase() === data.field_of_work.toLowerCase() ||
+                                      data.field_of_work.toLowerCase().includes(radio.value.toLowerCase()) ||
+                                      radio.value.toLowerCase().includes(data.field_of_work.toLowerCase());
+                        }
+                    }
+                });
+                
+                status.professional.fieldOfWork = fieldFound;
+            }
+            
+            // Check experience level
+            if (data.experience_level) {
+                const expLevelRadios = document.querySelectorAll('input[name="experience_level"]');
+                let levelFound = false;
+                
+                expLevelRadios.forEach(radio => {
+                    if (radio.checked && radio.value.toLowerCase() === data.experience_level.toLowerCase()) {
+                        levelFound = true;
+                    }
+                });
+                
+                status.professional.experienceLevel = levelFound;
+            }
+            
+            // Check years of experience
+            status.professional.yearsOfExperience = data.years_of_experience && 
+                document.getElementById('years_of_experience').value === data.years_of_experience;
+            
+            // Check skills
+            status.skills.populated = data.skills && document.getElementById('skills').value !== '';
+            
+            // Check work experience
+            status.experience.populated = data.experience && document.getElementById('experience').value === data.experience;
+            
+            // Check education
+            status.education.populated = data.education && document.getElementById('education').value === data.education;
+            
+            // Check additional information
+            status.additional.projects = data.projects && document.getElementById('projects').value === data.projects;
+            status.additional.website = data.website && document.getElementById('website').value === data.website;
+            status.additional.blog = data.blog && document.getElementById('blog').value === data.blog;
+            status.additional.youtube = data.youtube && document.getElementById('youtube').value === data.youtube;
+            status.additional.certifications = data.certifications && document.getElementById('certifications').value !== '';
+            status.additional.languages = data.languages && document.getElementById('languages').value !== '';
+            
+            console.log('Autofill status:', status);
+            
+            // Create a summary of what worked and what didn't
+            const workingFields = [];
+            const nonWorkingFields = [];
+            
+            // Check personal info
+            if (Object.values(status.personal).some(val => val)) {
+                workingFields.push('Personal Information');
+            } else if (data.full_name || data.email || data.phone || data.location || data.linkedin) {
+                nonWorkingFields.push('Personal Information');
+            }
+            
+            // Check professional details
+            if (status.professional.summary || status.professional.fieldOfWork || 
+                status.professional.experienceLevel || status.professional.yearsOfExperience) {
+                workingFields.push('Professional Details');
+            } else if (data.summary || data.field_of_work || data.experience_level || data.years_of_experience) {
+                nonWorkingFields.push('Professional Details');
+            }
+            
+            // Check skills
+            if (status.skills.populated) {
+                workingFields.push('Skills');
+            } else if (data.skills) {
+                nonWorkingFields.push('Skills');
+            }
+            
+            // Check work experience
+            if (status.experience.populated) {
+                workingFields.push('Work Experience');
+            } else if (data.experience) {
+                nonWorkingFields.push('Work Experience');
+            }
+            
+            // Check education
+            if (status.education.populated) {
+                workingFields.push('Education');
+            } else if (data.education) {
+                nonWorkingFields.push('Education');
+            }
+            
+            // Check additional info
+            if (status.additional.projects || status.additional.website || status.additional.blog || 
+                status.additional.youtube || status.additional.certifications || status.additional.languages) {
+                workingFields.push('Additional Information');
+            } else if (data.projects || data.website || data.blog || data.youtube || 
+                      data.certifications || data.languages) {
+                nonWorkingFields.push('Additional Information');
+            }
+            
+            // Log summary
+            console.log('Working fields:', workingFields);
+            console.log('Non-working fields:', nonWorkingFields);
+            
+            // Create a status message for the user
+            const statusDiv = document.createElement('div');
+            statusDiv.id = 'autofill-status';
+            statusDiv.style.marginTop = '15px';
+            statusDiv.style.padding = '10px';
+            statusDiv.style.border = '1px solid #ddd';
+            statusDiv.style.borderRadius = '5px';
+            statusDiv.style.backgroundColor = '#f9f9f9';
+            
+            let statusHTML = '<h4 style="margin-top:0">Resume Import Status:</h4>';
+            
+            if (workingFields.length > 0) {
+                statusHTML += '<p><strong>Successfully imported:</strong> ' + workingFields.join(', ') + '</p>';
+            }
+            
+            if (nonWorkingFields.length > 0) {
+                statusHTML += '<p><strong>Failed to import:</strong> ' + nonWorkingFields.join(', ') + '</p>';
+            }
+            
+            statusDiv.innerHTML = statusHTML;
+            
+            // Add the status message after the import section
+            const importSection = document.querySelector('.import-section');
+            if (importSection && !document.getElementById('autofill-status')) {
+                importSection.appendChild(statusDiv);
+                
+                // Remove after 10 seconds
+                setTimeout(() => {
+                    if (document.getElementById('autofill-status')) {
+                        document.getElementById('autofill-status').remove();
+                    }
+                }, 10000);
+            }
+        }
+        
+        // Combine additional fields with main fields on form submission
+        document.querySelector('.resume-form').addEventListener('submit', function(e) {
+            // Combine experience fields
+            const additionalExperiences = document.querySelectorAll('#additional-experience textarea');
+            const mainExperience = document.getElementById('experience');
+            
+            additionalExperiences.forEach(field => {
+                if (field.value.trim()) {
+                    mainExperience.value += ' | ' + field.value.trim();
+                }
+            });
+            
+            // Combine education fields
+            const additionalEducations = document.querySelectorAll('#additional-education textarea');
+            const mainEducation = document.getElementById('education');
+            
+            additionalEducations.forEach(field => {
+                if (field.value.trim()) {
+                    mainEducation.value += ' | ' + field.value.trim();
+                }
+            });
+            
+            // Make sure hidden fields are populated
+            updateSkillsField();
+            updateCertificationsField();
+            updateLanguagesField();
+            
+            // Final check for required fields
+            const requiredFields = [
+                'full_name', 'email', 'phone', 'location', 'summary', 
+                'experience', 'education', 'skills', 'certifications'
+            ];
+            
+            let allFieldsValid = true;
+            
+            requiredFields.forEach(field => {
+                const element = document.getElementById(field);
+                if (element && (!element.value || element.value.trim() === '')) {
+                    allFieldsValid = false;
+                    element.classList.add('error');
+                    
+                    // Add placeholder text if empty
+                    if (field === 'full_name') element.value = 'Your Name';
+                    else if (field === 'email') element.value = 'your.email@example.com';
+                    else if (field === 'phone') element.value = '+1 (555) 123-4567';
+                    else if (field === 'location') element.value = 'City, State, Country';
+                    else if (field === 'summary') element.value = 'Professional summary of your background and skills.';
+                    else if (field === 'experience') element.value = 'Company, Position, Description';
+                    else if (field === 'education') element.value = 'Degree, Institution, Year';
+                    else if (field === 'skills') element.value = 'Skill 1, Skill 2, Skill 3';
+                    else if (field === 'certifications') element.value = 'Certification 1, Certification 2';
+                }
+            });
+            
+            // Make sure a field of work is selected
+            if (!document.querySelector('input[name="field_of_work"]:checked')) {
+                document.querySelector('input[name="field_of_work"]').checked = true;
+            }
+            
+            // Make sure an experience level is selected
+            if (!document.querySelector('input[name="experience_level"]:checked')) {
+                document.querySelector('input[name="experience_level"]').checked = true;
+            }
+            
+            if (!allFieldsValid) {
+                // Don't prevent form submission, but highlight the fields that need attention
+                console.log('Some required fields were automatically filled with placeholder values');
+            }
+        });
+        
+        // Add CSS for error highlighting and location-language section
+        const style = document.createElement('style');
+        style.textContent = `
+            .error {
+                border: 1px solid #e74c3c !important;
+                background-color: rgba(231, 76, 60, 0.05) !important;
+            }
+            .error:focus {
+                border-color: #e74c3c !important;
+                box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.25) !important;
+            }
+            
+            .location-language-container {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .location-select {
+                width: 100%;
+            }
+            
+            .language-section {
+                border-top: 1px dashed #ddd;
+                padding-top: 10px;
+                margin-top: 5px;
+            }
+            
+            .language-section .help-text {
+                font-size: 0.8em;
+                color: #666;
+                margin-bottom: 5px;
+            }
+            
+            .language-radio-group {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-bottom: 10px;
+            }
+            
+            .manual-languages input {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+
+</body>
+</html>
